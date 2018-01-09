@@ -1,3 +1,5 @@
+import ctypes
+from ctypes import wintypes
 import configparser
 from gui import GUI
 import threading
@@ -33,9 +35,12 @@ def parse_config():
 
 
 def main():
+    # Tell windows correct AppUserModeIID
+    myappid = u'rainbow6-siege-danmu-request'  # arbitrary string
+    ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
+
     config = parse_config()
     queue = OperatorQueue('https://live.bilibili.com/' + config['roomId'], config['keyword'])
-    # TODO: add config to GUI
     gui = GUI(queue.next_attacker, queue.next_defender, config['font'], config['bg_color'])
     start_monitor_thread(queue, gui.display_window)
     sys.exit(gui.app.exec_())

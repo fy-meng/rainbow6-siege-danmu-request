@@ -163,19 +163,19 @@ class OperatorQueue:
             return None
 
         self.changed = False
-        text_attacker = ''
+        text = 'ATTACKERS:\n'
         for op in self.peek_3('attacker'):
-            text_attacker += '    ' + op.name + '\n'
+            text += '    ' + op.name + '\n'
         for _ in range(3 - len(self.peek_3('attacker'))):
-            text_attacker += '    --\n'
+            text += '    --\n'
 
-        text_defender = ''
+        text += 'DEFENDERS:\n'
         for op in self.peek_3('defender'):
-            text_defender += '    ' + op.name + '\n'
+            text += '    ' + op.name + '\n'
         for _ in range(3 - len(self.peek_3('defender'))):
-            text_defender += '    --\n'
+            text += '    --\n'
 
-        return [text_attacker.rstrip(), text_defender.rstrip()]
+        return text.rstrip()
 
 
 def main():
