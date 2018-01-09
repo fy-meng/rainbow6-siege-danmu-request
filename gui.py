@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import QApplication, QLabel, QGridLayout, QPushButton, QWid
 import sys
 
 
-class DisplayWindow(QWidget):
+class CombinedWindow(QWidget):
     def __init__(self):
         super().__init__()
         self.setGeometry(300, 300, 180, 310)
@@ -12,61 +12,38 @@ class DisplayWindow(QWidget):
         self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint)
         self.setAttribute(Qt.WA_TranslucentBackground)
 
-        text = 'ATTACKERS:\n' \
-               '    --\n' \
-               '    --\n' \
-               '    --\n' \
-               'DEFENDERS:\n' \
-               '    --\n' \
-               '    --\n' \
-               '    --'
-        self._label = QLabel(text, self)
-        self._label.setFont(QFont('bebas neue', 24, QFont.Bold))
-        self._label.setStyleSheet('color: white')
-
-        self._offset = None
-
-        self.show()
-
-    def update_text(self, text):
-        self._label.setText(text)
-
-    def mousePressEvent(self, event):
-        self._offset = event.pos()
-
-    def mouseMoveEvent(self, event):
-        if event.buttons() == Qt.RightButton:
-            x = event.globalX()
-            y = event.globalY()
-            x_w = self._offset.x()
-            y_w = self._offset.y()
-            self.move(x - x_w, y - y_w)
-
-
-class ControlWindow(QWidget):
-    def __init__(self):
-        super().__init__()
-
-        self.setGeometry(550, 350, 100, 100)
-        self.setWindowTitle('Control')
-        self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint)
-        self.setAttribute(Qt.WA_TranslucentBackground)
+        self._text_attackers = '    --\n' \
+                               '    --\n' \
+                               '    --'
+        self._text_defenders = '    --\n' \
+                               '    --\n' \
+                               '    --'
 
         grid = QGridLayout()
         self.setLayout(grid)
 
-        self.button_attacker = QPushButton('Next Attacker', self)
-        self.button_attacker.clicked.connect(self.handle_button_attacker)
-        self.button_attacker.setFont((QFont('bebas neue', 24, QFont.Bold)))
-        self.button_attacker.setStyleSheet('QPushButton {background-color: rgba(255, 255, 255, 10); color: white;}')
+        self._buttons_attacker = QPushButton('ATTACKERS:', self)
+        self._buttons_attacker.clicked.connect(self.handle_button_attacker)
+        self._buttons_attacker.setFont((QFont('bebas neue', 24, QFont.Bold)))
+        self._buttons_attacker.setStyleSheet('QPushButton {background-color: rgba(255, 255, 255, 10); color: white;}')
 
-        self.button_defender = QPushButton('Next Defender', self)
-        self.button_defender.clicked.connect(self.handle_button_defender)
-        self.button_defender.setFont((QFont('bebas neue', 24, QFont.Bold)))
-        self.button_defender.setStyleSheet('QPushButton {background-color: rgba(255, 255, 255, 10); color: white;}')
+        self._labels_attacker = QLabel(self._text_attackers, self)
+        self._labels_attacker.setFont(QFont('bebas neue', 24, QFont.Bold))
+        self._labels_attacker.setStyleSheet('color: white')
 
-        grid.addWidget(self.button_attacker, 0, 0)
-        grid.addWidget(self.button_defender, 1, 0)
+        self._buttons_defender = QPushButton('DEFENDERS:', self)
+        self._buttons_defender.clicked.connect(self.handle_button_defender)
+        self._buttons_defender.setFont((QFont('bebas neue', 24, QFont.Bold)))
+        self._buttons_defender.setStyleSheet('QPushButton {background-color: rgba(255, 255, 255, 10); color: white;}')
+
+        self._labels_defender = QLabel(self._text_defenders, self)
+        self._labels_defender.setFont(QFont('bebas neue', 24, QFont.Bold))
+        self._labels_defender.setStyleSheet('color: white')
+
+        grid.addWidget(self._buttons_attacker, 0, 0)
+        grid.addWidget(self._labels_attacker, 1, 0)
+        grid.addWidget(self._buttons_defender, 2, 0)
+        grid.addWidget(self._labels_defender, 3, 0)
 
         self._offset = None
 
@@ -77,6 +54,10 @@ class ControlWindow(QWidget):
 
     def handle_button_defender(self):
         pass  # overridden in run.py
+
+    def update_text(self, text):
+        self._labels_attacker.setText(text[0])
+        self._labels_defender.setText(text[1])
 
     def mousePressEvent(self, event):
         self._offset = event.pos()
@@ -93,7 +74,7 @@ class ControlWindow(QWidget):
 class GUI:
     def __init__(self, button_attacker_fn, button_defender_fn):
         self.app = QApplication(sys.argv)
-        ControlWindow.button_attacker = button_attacker_fn
-        ControlWindow.button_defender = button_defender_fn
-        self.display_window = DisplayWindow()
-        self.control_window = ControlWindow()
+        # TODO： implement button handler
+        CombinedWindow.button_attacker = button_attacker_fn
+        CombinedWindow.button_defender = button_defender_fn
+        self.combined_window = CombinedWindow()
