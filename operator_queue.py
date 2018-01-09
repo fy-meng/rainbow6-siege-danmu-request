@@ -92,9 +92,10 @@ class Defender(Operator):
 
 
 class OperatorQueue:
-    REQUEST_PATTERN = '钦定(进攻|防守) +(.+)'
+    REQUEST_PATTERN = '(进攻|防守) +(.+)'
 
-    def __init__(self, url):
+    def __init__(self, url, keyword):
+        OperatorQueue.REQUEST_PATTERN = keyword.encode('gbk').decode('utf-8') + '(进攻|防守) +(.+)'
         self.changed = False
         self._dmc = DanMuClient(url)
         if not self._dmc.isValid():
@@ -162,17 +163,19 @@ class OperatorQueue:
             return None
 
         self.changed = False
-        text = 'ATTACKERS:\n'
+        text_attacker = ''
         for op in self.peek_3('attacker'):
-            text += '    ' + op.name + '\n'
+            text_attacker += '    ' + op.name + '\n'
         for _ in range(3 - len(self.peek_3('attacker'))):
-            text += '    --\n'
-        text += 'DEFENDERS:\n'
+            text_attacker += '    --\n'
+
+        text_defender = ''
         for op in self.peek_3('defender'):
-            text += '    ' + op.name + '\n'
+            text_defender += '    ' + op.name + '\n'
         for _ in range(3 - len(self.peek_3('defender'))):
-            text += '    --\n'
-        return text
+            text_defender += '    --\n'
+
+        return [text_attacker.rstrip(), text_defender.rstrip()]
 
 
 def main():

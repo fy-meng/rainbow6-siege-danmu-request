@@ -3,6 +3,10 @@ import threading
 from operator_queue import OperatorQueue
 import sys
 import time
+import configparser
+import re
+
+PATTERN = '[0-9]+$'
 
 
 def start_monitor_thread(queue, display_window, pause_time=.05):
@@ -17,10 +21,23 @@ def start_monitor_thread(queue, display_window, pause_time=.05):
     monitor.start()
 
 
+def parseConfig():
+    config = configparser.ConfigParser()
+    config.read('config.ini')
+    # TODO: error check
+    room_id = config['General']['roomId']
+    keyword = config['General']['keyword']
+    room_id = re.search(PATTERN, room_id).group(0)
+
+    return {'roomId': room_id, 'keyword': keyword}
+
+
 def main():
-    queue = OperatorQueue('https://live.bilibili.com/4612373')
+    config = parseConfig()
+    queue = OperatorQueue('https://live.bilibili.com/' + config['roomId'], config['keyword'])
+    # TODO: add config to GUI
     gui = GUI(queue.next_attacker, queue.next_defender)
-    start_monitor_thread(queue, gui.display_window)
+    start_monitor_thread(queue, gui.combined_window)
     sys.exit(gui.app.exec_())
 
 
