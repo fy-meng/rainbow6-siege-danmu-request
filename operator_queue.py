@@ -95,7 +95,7 @@ class OperatorQueue:
     REQUEST_PATTERN = '(进攻|防守) +(.+)'
 
     def __init__(self, url, keyword):
-        OperatorQueue.REQUEST_PATTERN = keyword.encode('gbk').decode('utf-8') + '(进攻|防守) +(.+)'
+        OperatorQueue.REQUEST_PATTERN = keyword + '(进攻|防守) +(.+)'
         self.changed = False
         self._dmc = DanMuClient(url)
         if not self._dmc.isValid():
