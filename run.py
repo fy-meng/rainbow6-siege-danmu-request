@@ -29,15 +29,16 @@ def parse_config():
             'keyword': keyword,
             'font': (config['Display']['font'],
                      int(config['Display']['font_size']),
-                     config['Display']['font_color'])}
+                     config['Display']['font_color']),
+            'bg_color': config['Display']['bg_color']}
 
 
 def main():
     config = parse_config()
     queue = OperatorQueue('https://live.bilibili.com/' + config['roomId'], config['keyword'])
     # TODO: add config to GUI
-    gui = GUI(queue.next_attacker, queue.next_defender, config['font'])
-    start_monitor_thread(queue, gui.combined_window)
+    gui = GUI(queue.next_attacker, queue.next_defender, config['font'], config['bg_color'])
+    start_monitor_thread(queue, gui.display_window)
     sys.exit(gui.app.exec_())
 
 
