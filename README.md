@@ -1,9 +1,10 @@
 # rainbow6-siege-danmu-request
-rainbow6-siege-danmu-request 是一个识别特定格式的直播弹幕
-来点播干员的程序。
+rainbow6-siege-danmu-request 是一个识别特定格式的
+直播弹幕来点播干员的程序。
 
 ## 使用方法 Usage
-在 ``config.ini`` 中配置直播地址``roomId``和识别关键词``keyword``，
+在 ``config.ini`` 中配置直播地址``roomId``和识别关键
+词``keyword``，
 识别的格式为`[关检测][进攻/防守] [探员名]`。
 
 在 CMD 或 PowerShell 中运行 ``python run.py``。
@@ -12,11 +13,17 @@ rainbow6-siege-danmu-request 是一个识别特定格式的直播弹幕
 
 按下 Attacker 或 Defender 按钮来弹出最靠前的一个干员。
 
-## FAQ
+## 常见问题 FAQ
+Q: 按什么顺序来排序点播的干员？
+
+A: 点播的人数越多越靠前；当人数相同时，点播时间越早越靠前。
+在被弹出之前，一个探员只能被一个 ID 点播一次，但一个 ID 可以同时点播多
+个干员。
+
 Q: 可以用中文名来点播干员吗？
 
-A: 可以。支持的干员名称可以在 ``operator_queue.py`` 中的
- ``Attacker.OP_NAME_DICT`` 和 ``Defender.OP_NAME_DICT`` 
+A: 可以。支持的干员名称可以在 ``operator_queue.py`` 
+中的 ``Attacker.OP_NAME_DICT`` 和 ``Defender.OP_NAME_DICT`` 
  来查询和修改。
 
 Q: 支持什么直播平台？
