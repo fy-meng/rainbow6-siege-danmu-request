@@ -22,7 +22,6 @@ class DisplayWindow(QWidget):
                '    --'
         self._label = QLabel(text, self)
         self._label.setFont(QFont(font, font_size, QFont.Bold))
-        # self._label.setStyleSheet('color: ' + font_color)
         self._label.setStyleSheet('QLabel {background-color: ' + bg_color +
                                   '; color: ' + font_color + ';}')
 
