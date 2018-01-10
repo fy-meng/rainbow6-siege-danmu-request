@@ -1,5 +1,5 @@
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QFont
+from PyQt5.QtGui import QFont, QIcon
 from PyQt5.QtWidgets import QApplication, QLabel, QGridLayout, QPushButton, QWidget
 import sys
 
@@ -10,7 +10,7 @@ class DisplayWindow(QWidget):
         self.setGeometry(300, 300, 180, 310)
         self.setWindowTitle('Display')
         self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint)
-        self.setAttribute(Qt.WA_TranslucentBackground)
+        self.setStyleSheet('QWidget {background-color: ' + bg_color + '}')
 
         text = 'ATTACKERS:\n' \
                '    --\n' \
@@ -22,8 +22,7 @@ class DisplayWindow(QWidget):
                '    --'
         self._label = QLabel(text, self)
         self._label.setFont(QFont(font, font_size, QFont.Bold))
-        self._label.setStyleSheet('QLabel {background-color: ' + bg_color +
-                                  '; color: ' + font_color + ';}')
+        self._label.setStyleSheet('QLabel { color: ' + font_color + ';}')
 
         self._offset = None
 
@@ -96,8 +95,9 @@ class ControlWindow(QWidget):
 class GUI:
     def __init__(self, button_attacker_fn, button_defender_fn, font, bg_color):
         self.app = QApplication(sys.argv)
-        ControlWindow.button_attacker = button_attacker_fn
-        ControlWindow.button_defender = button_defender_fn
+        self.app.setWindowIcon(QIcon('icon.png'))
+        ControlWindow.handle_button_attacker = button_attacker_fn
+        ControlWindow.handle_button_defender = button_defender_fn
         self.display_window = DisplayWindow(font[0], font[1], font[2], bg_color)
         self.control_window = ControlWindow(font[0], font[1], font[2])
 
