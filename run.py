@@ -1,5 +1,4 @@
 import ctypes
-from ctypes import wintypes
 import configparser
 from gui import GUI
 import threading

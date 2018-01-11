@@ -7,7 +7,7 @@ import sys
 class DisplayWindow(QWidget):
     def __init__(self, font, font_size, font_color, bg_color):
         super().__init__()
-        self.setGeometry(300, 300, 350, 550)
+        self.setGeometry(300, 300, 200, 400)
         self.setWindowTitle('Display')
         self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint)
         self.setStyleSheet('QWidget {background-color: ' + bg_color + '}')
@@ -105,10 +105,10 @@ class ControlWindow(QWidget):
 
 class GUI:
     def __init__(self, button_attacker_fn, button_defender_fn, font, bg_color):
+        QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
         self.app = QApplication(sys.argv)
         self.app.setWindowIcon(QIcon('icon.png'))
         ControlWindow.handle_button_attacker = button_attacker_fn
         ControlWindow.handle_button_defender = button_defender_fn
         self.display_window = DisplayWindow(font[0], font[1], font[2], bg_color)
         self.control_window = ControlWindow(font[0], font[1], font[2])
-

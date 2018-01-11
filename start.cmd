@@ -1,1 +1,1 @@
-start /min pythonw run.py
+start /min python run.py
