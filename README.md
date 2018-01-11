@@ -5,13 +5,13 @@ rainbow6-siege-danmu-request 是一个识别特定格式的
 ## 使用方法 Usage
 在 ``config.ini`` 中配置直播地址``roomId``和识别关键
 词``keyword``，
-识别的格式为`[关检测][进攻/防守] [探员名]`。
+识别的格式为`[关键词][探员名]`。
 
 在 CMD 或 PowerShell 中运行 ``python run.py``。
 
 窗口中将会显示点播干员的队列的前三个，按照点播人数和时间排序。
 
-按下 Attacker 或 Defender 按钮来弹出最靠前的一个干员。
+按下 Attacker 或 Defender 按钮来删除最靠前的一个干员。
 
 ## 常见问题 FAQ
 Q: 按什么顺序来排序点播的干员？

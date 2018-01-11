@@ -23,9 +23,9 @@ def parse_config():
     config = configparser.ConfigParser()
     with open('config.ini', encoding='utf-8') as f:
         config.read_file(f)
-    room_id = config['General']['roomId']
+    room_address = config['General']['roomAddress']
     keyword = config['General']['keyword']
-    return {'roomId': room_id,
+    return {'roomAddress': room_address,
             'keyword': keyword,
             'font': (config['Display']['font'],
                      int(config['Display']['font_size']),
@@ -39,7 +39,7 @@ def main():
     ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
 
     config = parse_config()
-    queue = OperatorQueue('https://live.bilibili.com/' + config['roomId'], config['keyword'])
+    queue = OperatorQueue(config['roomAddress'], config['keyword'])
     gui = GUI(queue.next_attacker, queue.next_defender, config['font'], config['bg_color'])
     start_monitor_thread(queue, gui.display_window)
     sys.exit(gui.app.exec_())
