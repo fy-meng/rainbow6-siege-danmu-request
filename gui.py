@@ -7,13 +7,13 @@ import sys
 class DisplayWindow(QWidget):
     def __init__(self, font, font_size, font_color, bg_color):
         super().__init__()
-        self.setGeometry(300, 300, 180, 310)
+        self.setGeometry(300, 300, 250, 400)
         self.setWindowTitle('Display')
         self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint)
         self.setStyleSheet('QWidget {background-color: ' + bg_color + '}')
 
         text = 'ATTACKERS:\n' \
-               '    --\n' \
+               '    BLACKBEARD\n' \
                '    --\n' \
                '    --\n' \
                'DEFENDERS:\n' \
@@ -27,6 +27,17 @@ class DisplayWindow(QWidget):
         self._offset = None
 
         self.show()
+
+        text = 'ATTACKERS:\n' \
+               '    --\n' \
+               '    --\n' \
+               '    --\n' \
+               'DEFENDERS:\n' \
+               '    --\n' \
+               '    --\n' \
+               '    --'
+
+        self._label.setText(text)
 
     def update_text(self, text):
         self._label.setText(text)
