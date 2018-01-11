@@ -7,7 +7,7 @@ import sys
 class DisplayWindow(QWidget):
     def __init__(self, font, font_size, font_color, bg_color):
         super().__init__()
-        self.setGeometry(300, 300, 250, 400)
+        self.setGeometry(300, 300, 350, 550)
         self.setWindowTitle('Display')
         self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint)
         self.setStyleSheet('QWidget {background-color: ' + bg_color + '}')
