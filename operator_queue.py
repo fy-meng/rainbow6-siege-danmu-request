@@ -165,13 +165,13 @@ class OperatorQueue:
         self.changed = False
         text = 'ATTACKERS:\n'
         for op in self.peek_3('attacker'):
-            text += '    ' + op.name + '\n'
+            text += '    ' + op.name.upper() + '\n'
         for _ in range(3 - len(self.peek_3('attacker'))):
             text += '    --\n'
 
         text += 'DEFENDERS:\n'
         for op in self.peek_3('defender'):
-            text += '    ' + op.name + '\n'
+            text += '    ' + op.name.upper() + '\n'
         for _ in range(3 - len(self.peek_3('defender'))):
             text += '    --\n'
 
