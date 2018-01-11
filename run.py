@@ -39,6 +39,7 @@ def main():
     ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
 
     config = parse_config()
+    print('https://live.bilibili.com/' + config['roomId'])
     queue = OperatorQueue('https://live.bilibili.com/' + config['roomId'], config['keyword'])
     gui = GUI(queue.next_attacker, queue.next_defender, config['font'], config['bg_color'])
     start_monitor_thread(queue, gui.display_window)
