@@ -93,7 +93,7 @@ class Defender(Operator):
 
 
 class OperatorQueue:
-    REQUEST_PATTERN = '(进攻|防守) *(.+)'
+    REQUEST_PATTERN = ' *(.+)'
 
     def __init__(self, url, keyword):
         OperatorQueue.REQUEST_PATTERN = keyword + OperatorQueue.REQUEST_PATTERN
@@ -101,6 +101,16 @@ class OperatorQueue:
         self._dmc = DanMuClient(url)
         if not self._dmc.isValid():
             raise ValueError('Url not valid')
+
+        self._attacker_nick_name = []
+        for o in Attacker.OP_NAME_DICT.values():
+            for nn in o:
+                self._attacker_nick_name.append(nn)
+
+        self._defender_nick_name = []
+        for o in Defender.OP_NAME_DICT.values():
+            for nn in o:
+                self._defender_nick_name.append(nn)
 
         self._attacker_queue = []
         self._defender_queue = []
@@ -111,23 +121,37 @@ class OperatorQueue:
 
         self._dmc.start(blockThread=False)
 
+    def find_operator_queue(self, nickname):
+        if nickname.lower() in self._attacker_nick_name:
+            return self._attacker_queue
+        elif nickname.lower() in self._defender_nick_name:
+            return self._defender_queue
+        else:
+            return None
+
     def process(self, msg):
         print('process')
         print('[{0}] \"{1}\"'.format(msg['NickName'], msg['Content']))
         m = re.match(OperatorQueue.REQUEST_PATTERN, msg['Content'].lower())
         if m:
             self.changed = True
-            q = self._attacker_queue if m.group(1) == '进攻' else self._defender_queue
+
+            q = self.find_operator_queue(m.group(1))
+            if q is None:
+                print('Illegal operator name: ' + m.group(1))
+                return
+
             find = False
             for operator in q:
-                if operator.match_name(m.group(2)):
+                if operator.match_name(m.group(1)):
                     operator.update(msg['NickName'])
                     find = True
                     break
+
             if not find:
                 try:
-                    new_operator = Attacker(m.group(2), msg['NickName']) if m.group(1) == '进攻' \
-                        else Defender(m.group(2), msg['NickName'])
+                    new_operator = Attacker(m.group(1), msg['NickName']) if q == self._attacker_queue \
+                        else Defender(m.group(1), msg['NickName'])
                     q.append(new_operator)
                 except ValueError as e:
                     print(e)
@@ -178,11 +202,3 @@ class OperatorQueue:
             text += '    --\n'
 
         return text.rstrip()
-
-
-def main():
-    q = OperatorQueue('https://live.bilibili.com/4612373')
-
-
-if __name__ == '__main__':
-    main()
