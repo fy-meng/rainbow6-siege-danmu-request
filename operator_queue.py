@@ -1,7 +1,8 @@
-from danmu import DanMuClient
 import heapq
 import re
 import time
+
+from danmu import DanMuClient
 
 
 class Operator:
@@ -48,8 +49,8 @@ class Operator:
 
 class Attacker(Operator):
     OP_NAME_DICT = {
-        'sledge': ['sledge', '大锤'],
-        'thatcher': ['thatcher', 'emp'],
+        'sledge': ['sledge', '大锤', '锤哥', '锤子'],
+        'thatcher': ['thatcher', 'emp', 'thatcher', '撒切尔'],
         'ash': ['ash'],
         'thermite': ['thermite', '热切', '铝热'],
         'montagne': ['montagne', 'monty', '全盾', '大盾'],
@@ -58,14 +59,16 @@ class Attacker(Operator):
         'iq': ['iq'],
         'fuze': ['fuze', '福泽', '咚咚咚', '咚子'],
         'glaz': ['glaz', '狙', '大狙'],
-        'buck': ['buck'],
-        'blackbeard': ['blackbeard', 'bb', '胡哥', '黑胡子', '枪盾', '步枪盾'],
-        'capitao': ['capitao', '开皮条', '队长', '巴西队长', '烧烤哥'],
+        'buck': ['buck', '加拿大自爆兵'],
+        'blackbeard': ['blackbeard', 'bb', '胡哥', '黑胡子', '大胡子', '枪盾', '步枪盾'],
+        'capitao': ['capitao', '开皮条', '队长', '巴西队长', '烧烤哥', '巴西烤肉', '烤肉队长'],
         'jackal': ['jackal', '足控', '脚气', '豺狼'],
         'ying': ['ying', '莹', '烛光'],
-        'zofia': ['zofia', '佐菲亚', '人妻'],
-        'dokkaebi': ['dokkaebi', '狗逼', '狗逼小姐姐', '美羊羊'],
-        'hibana': ['hibana', '火花']
+        'zofia': ['zofia', '佐菲亚', '人妻', '波兰大姐姐'],
+        'dokkaebi': ['dokkaebi', '狗逼', '狗逼小姐姐', '美羊羊', '韩国小姐姐', '狗妹'],
+        'hibana': ['hibana', '火花', '花火'],
+        'lion': ['lion', '狮子', '狮子头', '河东狮吼', '里昂'],
+        'finka': ['finka', '毛妹', '拳头', '无影拳']
     }
 
 
@@ -75,19 +78,19 @@ class Defender(Operator):
         'smoke': ['smoke', '毒气', '臭屁'],
         'castle': ['castle', '龙鳞板'],
         'pulse': ['pulse', '心跳'],
-        'doc': ['doc', '医生', '庸医', '老中医'],
+        'doc': ['doc', '医生', '庸医', ],
         'rook': ['rook'],
-        'jager': ['jager', '杰哥', '耶格', 'ADS'],
+        'jager': ['jager', 'Jäger', '杰哥', '耶格', 'ADS', '耶哥', '耶大头', ],
         'bandit': ['bandit', '皮卡丘', '班迪', '电兵'],
         'tachanka': ['tachanka', 'lord', '机枪', '机枪哥'],
         'kapkan': ['kapkan', '绊雷', 'edd', '卡胖'],
         'frost': ['frost', '夹子', '夹子妹'],
         'valkrie': ['valkrie', '瓦基', '女武神', '瓦尔基里', '黑眼'],
         'caveira': ['caveira', 'cav', '女鬼', '审问'],
-        'echo': ['echo', '死宅'],
+        'echo': ['echo', '死宅', '肥宅', '宅'],
         'mira': ['mira', '黑镜'],
-        'lesion': ['lesion', '刘醒'],
-        'ela': ['ela'],
+        'lesion': ['lesion', '刘醒', '老中医'],
+        'ela': ['ela', '波兰小姐姐'],
         'vigil': ['vigil', '伟哥', '白裤裆', '男鬼', '寒冬一鸡']
     }
 
@@ -101,7 +104,7 @@ class OperatorQueue:
         self.changed = False
         self._dmc = DanMuClient(url)
         if not self._dmc.isValid():
-            raise ValueError('Url not valid')
+            raise ValueError('Invalid url')
 
         self._attacker_nick_name = []
         for o in Attacker.OP_NAME_DICT.values():
@@ -131,7 +134,7 @@ class OperatorQueue:
             return None
 
     def process(self, msg):
-        print('processing: ')
+        print('Processing: ')
         print('[{0}] \"{1}\"'.format(msg['NickName'], msg['Content']))
         m = re.match(OperatorQueue.REQUEST_PATTERN, msg['Content'].lower())
         if m:
