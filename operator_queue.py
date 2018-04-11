@@ -92,7 +92,7 @@ class Defender(Operator):
 
 
 class OperatorQueue:
-    REQUEST_PATTERN = '(进攻|防守) +(.+)'
+    REQUEST_PATTERN = '(进攻|防守) *(.+)'
 
     def __init__(self, url, keyword):
         OperatorQueue.REQUEST_PATTERN = keyword + '(进攻|防守) +(.+)'
