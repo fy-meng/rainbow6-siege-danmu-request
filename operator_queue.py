@@ -93,10 +93,11 @@ class Defender(Operator):
 
 
 class OperatorQueue:
-    REQUEST_PATTERN = '(进攻|防守) +(.+)'
+    REQUEST_PATTERN = '(?:进攻|防守) *(.+)'
 
     def __init__(self, url, keyword):
         OperatorQueue.REQUEST_PATTERN = keyword + OperatorQueue.REQUEST_PATTERN
+        print(OperatorQueue.REQUEST_PATTERN)
         self.changed = False
         self._dmc = DanMuClient(url)
         if not self._dmc.isValid():
@@ -130,7 +131,7 @@ class OperatorQueue:
             return None
 
     def process(self, msg):
-        print('process')
+        print('processing: ')
         print('[{0}] \"{1}\"'.format(msg['NickName'], msg['Content']))
         m = re.match(OperatorQueue.REQUEST_PATTERN, msg['Content'].lower())
         if m:

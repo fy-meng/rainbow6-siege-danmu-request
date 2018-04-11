@@ -23,7 +23,7 @@ def parse_config():
     config = configparser.ConfigParser()
     with open('config.ini', encoding='utf-8') as f:
         config.read_file(f)
-    room_address = config['General']['roomAddress']
+    room_address = config['General']['roomId']
     keyword = config['General']['keyword']
     return {'roomAddress': room_address,
             'keyword': keyword,
